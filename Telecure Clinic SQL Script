@@ -1,4 +1,4 @@
---Calculate total no of patient in telehealthTotal no of patient
+--Calculate total no of patient in telehealth
 select count(distinct patientid) as no_of_patient
 from patient
 
