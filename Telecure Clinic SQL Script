@@ -1,0 +1,62 @@
+--Calculate total no of patient in telehealthTotal no of patient
+select count(distinct patientid) as no_of_patient
+from patient
+
+--Calculate average patient age in telehealth
+select avg(date_part('Year', age(dateofbirth))) as avg_age
+from patient
+
+--Calculate average appointment duration
+select round(avg(durationminutes),0) as avg_appointment_duration
+from telehealthappointment
+
+--Calculate % of appointment with connection issue
+SELECT
+    COUNT(t.AppointmentID) AS TotalAppointments,
+    SUM(CASE WHEN tm.ConnectionQuality = 'Poor' THEN 1 ELSE 0 END) AS AppointmentsWithTechnicalIssues,
+    (SUM(CASE WHEN tm.ConnectionQuality = 'Poor'THEN 1 ELSE 0 END) * 100.0) / COUNT(t.AppointmentID) AS PercentageWithTechnicalIssues
+FROM TelehealthAppointment t
+LEFT JOIN TechnicalMetrics tm ON t.AppointmentID = tm.AppointmentID
+
+--Calculate provider name and amount of pending revenue
+select concat(firstname||' '||lastname) as providername,
+sum(amount) as amount_pending
+from billing
+inner join provider 
+on billing.providerid=provider.providerid
+where paymentstatus='Pending'
+group by firstname, lastname
+order by 2 desc
+
+--Calculate no of appointment per week in January 2024
+with cte as(
+select count(*) as no_of_appointment,'1st week' as week
+from telehealthappointment
+where appointmentdate between '2024-01-01 00:00:00' and '2024-01-07 23:59:59'
+union
+select count(*) as no_of_appointment,'2nd week' as week
+from telehealthappointment
+where appointmentdate between '2024-01-08 00:00:00' and '2024-01-14 23:59:59'
+union
+select count(*) as no_of_appointment,'3rd week' as week
+from telehealthappointment
+where appointmentdate between '2024-01-15 00:00:00' and '2024-01-21 23:59:59'
+union
+select count(*) as no_of_appointment,'4th week' as week
+from telehealthappointment
+where appointmentdate between '2024-01-22 00:00:00' and '2024-01-28 23:59:59'
+union
+select count(*) as no_of_appointment,'5th week' as week
+from telehealthappointment
+where appointmentdate between '2024-01-29 00:00:00' and '2024-01-31 23:59:59'
+)
+select no_of_appointment, week
+from cte 
+order by 2 asc
+
+--Calculate count of paid and pending payment status
+select sum(case when paymentstatus='Paid' then 1 else 0 end) as paid_count,
+       sum(case when paymentstatus='Pending' then 1 else 0 end) as pending_count
+from billing
+
+
