@@ -1,0 +1,51 @@
+This file contains following tables-
+1. Patient Table
+2. Provider Table
+3. TelehealthAppointment Table
+4. TechnicalMetrics Table
+5. Billing Table
+
+Column description for Patient Table-
+PatientID (INT): Unique identifier for each patient.
+FirstName (VARCHAR): First name of the patient.
+LastName (VARCHAR): Last name of the patient.
+DateOfBirth (DATE): Date of birth of the patient.
+Gender (VARCHAR): Gender of the patient.
+Address (VARCHAR): Address of the patient.
+Phone (VARCHAR): Phone number of the patient.
+Email (VARCHAR): Email address of the patient.
+
+Column description for Provider Table-
+ProviderID (INT): Unique identifier for each provider.
+FirstName (VARCHAR): First name of the provider.
+LastName (VARCHAR): Last name of the provider.
+Specialty (VARCHAR): Specialty of the provider.
+Address (VARCHAR): Address of the provider.
+Phone (VARCHAR): Phone number of the provider.
+
+Column description for TelehealthAppointment Table-
+AppointmentID (INT): Unique identifier for each appointment.
+PatientID (INT): Foreign key referencing the Patient table.
+ProviderID (INT): Foreign key referencing the Provider table.
+DateTime (DATETIME): Date and time of the appointment.
+Duration (INT): Duration of the appointment in minutes.
+Status (VARCHAR): Status of Completed, Scheduled or Canceled appointment.
+
+Column description for TechnicalMetrics Table-
+MetricsID (INT): Unique identifier for each technical metric.
+AppointmentID (INT): Foreign key referencing the TelehealthAppointment table.
+ConnectionQuality (INT): Quality of the connection during the appointment.
+AudioQuality (INT): Quality of audio during the appointment.
+VideoQuality (INT): Quality of video during the appointment.
+
+Column description for Billing Table-
+BillingID (INT): Unique identifier for each billing record.
+PatientID (INT): Foreign key referencing the Patient table.
+ProviderID (INT): Foreign key referencing the Provider table.
+AppointmentID (INT): Foreign key referencing the TelehealthAppointment table.
+Amount (DECIMAL): Billing amount for the appointment.
+PaymentStatus (VARCHAR): Payment status (Paid or Pending).
+
+
+
+
